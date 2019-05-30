@@ -17,6 +17,39 @@ body {
   display: none;
 }
 
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+rect :hover {
+  fill: darker;
+}
+
 </style>
 <body>
 <?php
@@ -25,6 +58,7 @@ body {
 
  ?>
 <script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script>
     var data = <?php echo json_encode($data) ?>;
     console.log(data);
@@ -49,6 +83,13 @@ body {
         .scale(y)
         .orient("left");
 
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(function(d) {
+        return "<strong>Water:</strong> <span style='color:red'>" + d.value + "</span>";
+      })
+
     var color = d3.scale.ordinal()
         .range(["#d5d5d5","#92c5de","#ca0020","#f4a582","#0571b0"]);
 
@@ -58,10 +99,11 @@ body {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    svg.call(tip);
 
     var year = data.map(function(d) { return d.Year; });
     var rateNames = data[0].Values.map(function(d) { return d.City; });
-
+    console.log(year);
     x0.domain(year);
     x1.domain(rateNames).rangeRoundBands([0, x0.rangeBand()]);
     y.domain([0, 17]);
@@ -99,12 +141,8 @@ body {
         .style("fill", function(d) { return color(d.City) })
         .attr("y", function(d) { return y(0); })
         .attr("height", function(d) { return height - y(0); })
-        .on("mouseover", function(d) {
-            d3.select(this).style("fill", d3.rgb(color(d.City)).darker(2));
-        })
-        .on("mouseout", function(d) {
-            d3.select(this).style("fill", color(d.City));
-        });
+        .on("mouseover", tip.show)
+        .on("mouseout", tip.hide);
 
     slice.selectAll("rect")
         .transition()
