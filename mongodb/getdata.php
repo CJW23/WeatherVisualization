@@ -283,6 +283,43 @@
         }
         return $data;
     }
+    function TotalAvgWater($collection){
+        $data = array();
+        $temp = array();
+        $cursor = $collection->aggregate([
+            [
+                '$group'=>[
+                    '_id'=> 'null',
+                    'DayWater'=>[
+                        '$avg'=> '$TenMinMaxWater'
+                    ],
+                    'TenMinMaxWater'=>[
+                        '$avg'=> '$TenMinMaxWater'
+                    ],
+                    'OneHrMaxWater'=>[
+                        '$avg'=>'$OneHrMaxWater'
+                    ],
+                    'MinHumi'=>[
+                        '$avg'=>'$MinHumi'
+                    ],
+                    'AvgHumi'=>[
+                        '$avg'=>'$AvgHumi'
+                    ]
+                ]
+            ]
+        ]);
+        foreach ($cursor as $temp){
+            array_push($data,
+            array(
+                'DayWater'=>round($temp[DayWater], 1),
+                'TenMinMaxWater'=>round($temp[TenMinMaxWater],1),
+                'OneHrMaxWater'=>round($temp[OneHrMaxWater],1),
+                'MinHumi'=>round($temp[MinHumi],1),
+                'AvgHumi'=>round($temp[AvgHumi],1)
+            ));
+        };
+        return $data;
+    }
     
     //CityYearAvg($collection, $code);
     //MonthAvgTemp($collection);

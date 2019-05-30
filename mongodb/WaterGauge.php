@@ -11,15 +11,42 @@
     </style>
 </head>
 <body>
-<svg id="fillgauge1" width="97%" height="250"></svg>
+<?php
+    include "getdata.php";
+    $data = TotalAvgWater($collection);
+ ?>
+<h1>일평균 강수량
+<svg id="fillgauge1" width="30%" height="250"></svg><br>
+<h1>10분 최대 강수량 평균
+<svg id="fillgauge2" width="30%" height="250"></svg><br>
+<h1>한시간 최대 강수량 평균
+<svg id="fillgauge3" width="30%" height="250"></svg><br>
+<h1>최소 상대습도 평균
+<svg id="fillgauge4" width="30%" height="250"></svg><br>
+<h1>평균 상대습도
+<svg id="fillgauge5" width="30%" height="250"></svg><br>
+
 <script>
-    loadLiquidFillGauge("fillgauge1", 45.34);
+    
+    var data = <?php echo json_encode($data)?>;
+    //console.log(data[0].DayWater);
+    loadLiquidFillGauge("fillgauge1", data[0].DayWater, 1);
+    loadLiquidFillGauge("fillgauge2", data[0].TenMinMaxWater, 1);
+    loadLiquidFillGauge("fillgauge3", data[0].OneHrMaxWater, 1);
+    loadLiquidFillGauge("fillgauge4", data[0].MinHumi, 2);
+    loadLiquidFillGauge("fillgauge5", data[0].AvgHumi, 2);
 
 
-function liquidFillGaugeDefaultSettings() {
+function liquidFillGaugeDefaultSettings(num) {
+    if(num == 1){
+        var maxValue = 10;
+    }
+    else if(num == 2){
+        var maxValue = 100;
+    }
     return {
         minValue: 0, // The gauge minimum value.
-        maxValue: 100, // The gauge maximum value.
+        maxValue, // The gauge maximum value.
         circleThickness: 0.05, // The outer circle thickness as a percentage of it's radius.
         circleFillGap: 0.05, // The size of the gap between the outer circle and wave circle as a percentage of the outer circles radius.
         circleColor: "#178BCA", // The color of the outer circle.
@@ -40,10 +67,14 @@ function liquidFillGaugeDefaultSettings() {
         waveTextColor: "#A4DBf8" // The color of the value text when the wave overlaps it.
     };
 }
-
-function loadLiquidFillGauge(elementId, value, config) {
-    if (config == null) config = liquidFillGaugeDefaultSettings();
-
+function colores_google(n) {
+  var colores_g = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
+  var num = Math.floor(Math.random()*20);
+  console.log(num);
+  return colores_g[num];
+}
+function loadLiquidFillGauge(elementId, value, num, config) {
+    if (config == null) config = liquidFillGaugeDefaultSettings(num);
     var gauge = d3.select("#" + elementId);
     var radius = Math.min(parseInt(gauge.style("width")), parseInt(gauge.style("height"))) / 2;
     var locationX = parseInt(gauge.style("width")) / 2 - radius;
@@ -64,7 +95,13 @@ function loadLiquidFillGauge(elementId, value, config) {
     var textPixels = (config.textSize * radius / 2);
     var textFinalValue = parseFloat(value).toFixed(2);
     var textStartValue = config.valueCountUp ? config.minValue : textFinalValue;
-    var percentText = config.displayPercent ? "%" : "";
+    if(num == 1){
+        var percentText = config.displayPercent ? "mm" : "";
+    }
+    else if( num == 2){
+        var percentText = config.displayPercent ? "%" : "";
+    }
+    
     var circleThickness = config.circleThickness * radius;
     var circleFillGap = config.circleFillGap * radius;
     var fillCircleMargin = circleThickness + circleFillGap;
@@ -172,7 +209,7 @@ function loadLiquidFillGauge(elementId, value, config) {
         .attr("cx", radius)
         .attr("cy", radius)
         .attr("r", fillCircleRadius)
-        .style("fill", config.waveColor);
+        .style("fill", function(d,i) { return colores_google(i); });
 
     // Text where the wave does overlap.
     var text2 = fillCircleGroup.append("text")
