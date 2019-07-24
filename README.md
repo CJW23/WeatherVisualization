@@ -12,7 +12,8 @@
 # Structure
 - Laguage: D3, PHP, Python
 - DBMS: MongoDB
-
+- regression.py: regression sourceCode.
+- weather.json: Data
 # ScreenShot
 <img width="1417" alt="KakaoTalk_Photo_2019-07-24-15-20-30" src="https://user-images.githubusercontent.com/32676275/61780604-d0278600-ae3d-11e9-9abf-49f6df19a385.png" width="30%" height="30%"><img width="1389" alt="KakaoTalk_Photo_2019-07-24-15-20-37" src="https://user-images.githubusercontent.com/32676275/61780610-d289e000-ae3d-11e9-9162-ea41eb197e72.png" width="30%" height="30%"><img width="1391" alt="KakaoTalk_Photo_2019-07-24-15-20-43" src="https://user-images.githubusercontent.com/32676275/61780616-d3bb0d00-ae3d-11e9-9538-6e387c5c84ac.png" width="30%" height="30%">
 <img width="1380" alt="KakaoTalk_Photo_2019-07-24-15-20-49" src="https://user-images.githubusercontent.com/32676275/61780623-d74e9400-ae3d-11e9-8827-3f651735af26.png" width="30%" height="30%"><img width="1384" alt="KakaoTalk_Photo_2019-07-24-15-20-55" src="https://user-images.githubusercontent.com/32676275/61780629-d87fc100-ae3d-11e9-9355-a7a30793e6a6.png" width="30%" height="30%"><img width="1280" alt="KakaoTalk_Photo_2019-07-24-15-21-02" src="https://user-images.githubusercontent.com/32676275/61780637-d9b0ee00-ae3d-11e9-9a2d-c834a16e3ebf.png" width="30%" height="30%">
