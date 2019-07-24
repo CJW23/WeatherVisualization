@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<!--
+Editorial by HTML5 UP
+html5up.net | @ajlkn
+Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+<head>
+  <title>WeatherProject</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+<body class="is-preload">
+  <!-- Wrapper -->
+  <div id="wrapper">
+
+    <!-- Main -->
+    <div id="main">
+      <div class="inner">
+
+        <!-- Header -->
+        <header id="header">
+          <a href="index.php" class="logo"><strong>WeatherProject</strong> by CBC</a>
+        </header>
+
+        <section>
+          <header class="major">
+            <h2>Prediction</h2>
+          </header>
+
+          <form method="get" action="">
+            <div style="width:25%;float:left;margin-right:5px;">
+              <select name="city" id="city">
+                <option value = "" disabled selected>- SELECT REGION -</option>
+                <option value ="서울">서울</option>
+                <option value="부산">부산</option>
+                <option value="대구">대구</option>
+                <option value="인천">인천</option>
+                <option value="청주">청주</option>
+                <option value="수원">수원</option>
+                <option value="속초">속초</option>
+                <option value="대전">대전</option>
+                <option value="천안">천안</option>
+                <option value="여수">여수</option>
+                <option value="제주">제주</option>
+              </select>
+            </div>
+            <div style="float:left;margin-right:25px;">
+				      <button type="button" onclick="store();">PREDICT</button>
+				    </div>
+          </form><br><br><br>
+
+          <div>
+            <iframe id="url" src=""  width="100%" height="590px"></iframe>
+          </div>
+
+        </section>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+      <div class="inner">
+
+        <!-- Menu -->
+        <nav id="menu">
+          <header class="major">
+            <br><br><br>
+            <h2>Menu</h2>
+          </header>
+          <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="search.html">Region Search</a></li>
+            <li><a href="compregion.html">Comparison</a></li>
+            <li><a href="#">Prediction</a></li>
+            <li><a href="about.html">About Team</a></li>
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    function store()
+    {
+      var target = document.getElementById("city").value;
+      var url = "?num=1&city=" + target;
+      document.getElementById("url").src= "../PredictLine.php" + url;
+    }
+  </script>
+</body>
+</html>
